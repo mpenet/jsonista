@@ -57,6 +57,7 @@
       PersistentHashMapDeserializer
       PersistentVectorDeserializer
       SymbolSerializer
+      RecordSerializer
       RatioSerializer FunctionalKeywordSerializer)
     (com.fasterxml.jackson.core JsonGenerator$Feature)
     (com.fasterxml.jackson.databind
@@ -81,6 +82,7 @@
     (.addSerializer clojure.lang.Keyword (KeywordSerializer. false))
     (.addSerializer clojure.lang.Ratio (RatioSerializer.))
     (.addSerializer clojure.lang.Symbol (SymbolSerializer.))
+    (.addSerializer clojure.lang.IRecord (RecordSerializer.))
     (.addSerializer java.util.Date (if date-format
                                      (DateSerializer. date-format)
                                      (DateSerializer.)))
@@ -242,3 +244,7 @@
    (-write-value to object +default-mapper+))
   ([to object ^ObjectMapper mapper]
    (-write-value to object mapper)))
+
+(comment
+  (defrecord Foo [a])
+  (write-value-as-bytes (Foo. 1)))
